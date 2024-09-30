@@ -2,8 +2,10 @@ version: '3.8'
 
 services:
   web:
-    build: .
-    command: gunicorn tu_proyecto.wsgi:application --bind 0.0.0.0:8000
+    build:
+      context: .
+      dockerfile: .  # Especifica el nombre del archivo "dockerfile"
+    command: gunicorn webempresa.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
