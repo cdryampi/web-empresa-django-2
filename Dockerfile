@@ -1,11 +1,19 @@
 # Usar una imagen base de Python
 FROM python:3.9-slim
 
-# Instalar dependencias del sistema
+# Instalar dependencias del sistema necesarias para Pillow y otras librerías
 RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     zlib1g-dev \
     libpng-dev \
+    libfreetype6-dev \
+    liblcms2-dev \
+    libopenjp2-7 \
+    libtiff5 \
+    libwebp-dev \
+    tcl8.6-dev \
+    tk8.6-dev \
+    python3-tk \
     && rm -rf /var/lib/apt/lists/*
 
 # Añadir wait-for-it.sh
