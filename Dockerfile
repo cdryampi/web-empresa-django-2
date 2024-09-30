@@ -10,8 +10,6 @@ RUN apt-get update && apt-get install -y \
     liblcms2-dev \
     libopenjp2-7 \
     libtiff-dev \  # Reemplazar libtiff5 por libtiff-dev
-    tcl8.6-dev \
-    tk8.6-dev \
     python3-tk \
     && rm -rf /var/lib/apt/lists/*
 
