@@ -71,7 +71,7 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << 'EOF'
         # Navegar al directorio del proyecto
-        cd /path/to/your/project  # Cambia a la ruta correcta de tu proyecto en EC2
+        cd /home/ubuntu/  # Cambia a la ruta correcta de tu proyecto en EC2
 
         # Detener y eliminar contenedores existentes
         docker-compose down
