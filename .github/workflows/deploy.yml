@@ -1,7 +1,7 @@
 - name: Deploy to EC2
   run: |
     ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << 'EOF'
-    cd /home/ubuntu/  # Navega al directorio donde se creará el proyecto
+    cd /home/ubuntu/web-empresa-django-2  # Navega al directorio donde se creará el proyecto
     git clone https://github.com/cdryampi/web-empresa-django-2.git || cd webempresa && git pull origin master  # Clona o actualiza el código
     docker-compose down  # Detiene los contenedores anteriores (si existen)
     docker-compose up -d --build  # Levanta los nuevos contenedores
