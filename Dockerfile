@@ -1,15 +1,19 @@
 # Usar una imagen base de Python
 FROM python:3.9-slim
 
-# Establecer el directorio de trabajo
-WORKDIR /app
-
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     zlib1g-dev \
     libpng-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Añadir wait-for-it.sh
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
+
+# Establecer el directorio de trabajo
+WORKDIR /app
 
 # Copiar los archivos de requerimientos e instalarlos
 COPY requirements.txt .
@@ -25,5 +29,5 @@ RUN python manage.py collectstatic --noinput
 # Exponer el puerto que usa Gunicorn
 EXPOSE 8000
 
-# Comando para ejecutar Gunicorn
-CMD ["gunicorn", "tu_proyecto.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Comando para ejecutar Gunicorn usando wait-for-it
+CMD ["/wait-for-it.sh", "db:5432", "--", "gunicorn", "webempresa.wsgi:application", "--bind", "0.0.0.0:8000"]
