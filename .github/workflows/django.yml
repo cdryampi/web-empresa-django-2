@@ -37,7 +37,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install system dependencies
+    - name: Install system dependencies on GitHub Actions
       run: |
         sudo apt-get update
         sudo apt-get install -y libjpeg-dev zlib1g-dev libpng-dev postgresql-client
@@ -67,28 +67,18 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
 
-    - name: Connect to EC2 and Install System Dependencies
+    - name: Connect to EC2 and Deploy with Docker Compose
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << 'EOF'
-        sudo apt-get update
-        sudo apt-get install -y libjpeg-dev zlib1g-dev libpng-dev python3-pip python3-venv nginx
-        EOF
-
-    - name: Connect to EC2 and Deploy
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << 'EOF'
+        # Navegar al directorio del proyecto
         cd /path/to/your/project  # Cambia a la ruta correcta de tu proyecto en EC2
-        git pull origin master  # Actualiza el código desde GitHub
-        source venv/bin/activate  # Activa el entorno virtual
-        pip install -r requirements.txt  # Instala las dependencias
-        python manage.py migrate  # Ejecuta migraciones
-        python manage.py collectstatic --noinput  # Recoge archivos estáticos
-        sudo systemctl restart gunicorn  # Reinicia Gunicorn
-        sudo systemctl restart nginx  # Reinicia Nginx
-        EOF
 
-    - name: Clean up Docker containers (if needed)
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << 'EOF'
-        sudo docker system prune -af  # Usamos sudo para comandos Docker
+        # Detener y eliminar contenedores existentes
+        docker-compose down
+
+        # Construir y levantar los nuevos contenedores
+        docker-compose up -d --build
+
+        # Limpiar recursos antiguos
+        docker system prune -af
         EOF
