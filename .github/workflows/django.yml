@@ -20,7 +20,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: thos
-          POSTGRES_DB: webempresa
+          POSTGRES_DB: webEmpresa
         ports:
           - 5432:5432
         options: >-
@@ -49,14 +49,14 @@ jobs:
 
     - name: Set up Database and Run Migrations
       env:
-        DATABASE_URL: postgres://postgres:postgrespassword@localhost:5432/webempresa
+        DATABASE_URL: postgres://postgres:postgrespassword@localhost:5432/webEmpresa
       run: |
         python manage.py migrate
       working-directory: ./webempresa  # Cambia este directorio si es necesario
 
     - name: Run Tests
       env:
-        DATABASE_URL: postgres://postgres:postgrespassword@localhost:5432/webempresa
+        DATABASE_URL: postgres://postgres:postgrespassword@localhost:5432/webEmpresa
       run: |
         python manage.py test
       working-directory: ./webempresa  # Cambia este directorio si es necesario
