@@ -37,7 +37,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install system dependencies on GitHub Actions
+    - name: Install system dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y libjpeg-dev zlib1g-dev libpng-dev postgresql-client
@@ -70,9 +70,7 @@ jobs:
     - name: Connect to EC2 and Install System Dependencies
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << 'EOF'
-        # Actualiza los paquetes del sistema
         sudo apt-get update
-        # Instala dependencias del sistema
         sudo apt-get install -y libjpeg-dev zlib1g-dev libpng-dev python3-pip python3-venv nginx
         EOF
 
@@ -92,5 +90,5 @@ jobs:
     - name: Clean up Docker containers (if needed)
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << 'EOF'
-        docker system prune -af
+        sudo docker system prune -af  # Usamos sudo para comandos Docker
         EOF
