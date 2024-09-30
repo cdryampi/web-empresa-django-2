@@ -19,8 +19,8 @@ jobs:
         image: postgres:latest
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgrespassword
-          POSTGRES_DB: webEmpresa_test
+          POSTGRES_PASSWORD: thos
+          POSTGRES_DB: webempresa
         ports:
           - 5432:5432
         options: >-
