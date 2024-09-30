@@ -9,8 +9,7 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     liblcms2-dev \
     libopenjp2-7 \
-    libtiff-dev \  # Reemplazar libtiff5 por libtiff-dev
-    && rm -rf /var/lib/apt/lists/*
+    libtiff-dev
 
 # Añadir wait-for-it.sh
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /wait-for-it.sh
