@@ -1,23 +1,8 @@
 - name: Deploy to EC2
-  uses: webfactory/ssh-agent@v0.5.3
-  with:
-    ssh-private-key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
-
-- name: Connect to EC2 and Deploy Docker Compose
   run: |
     ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << 'EOF'
-    # Navegar al directorio del proyecto en EC2
-    cd /home/ubuntu/  # Cambia a la ruta correcta en tu servidor EC2
-
-    # Clonar el código de GitHub si no está presente
-    if [ ! -d ".git" ]; then
-      git clone https://github.com/cdryampi/web-empresa-django-2.git .  # Cambia a la URL de tu repositorio
-    fi
-
-    # Obtener el código más reciente de GitHub
-    git pull origin master
-
-    # Levantar los contenedores con Docker Compose
-    docker-compose down
-    docker-compose up -d --build
+    cd /home/ubuntu  # Navega al directorio donde se creará el proyecto
+    git clone https://github.com/cdryampi/web-empresa-django-2.git || cd webempresa && git pull origin master  # Clona o actualiza el código
+    docker-compose down  # Detiene los contenedores anteriores (si existen)
+    docker-compose up -d --build  # Levanta los nuevos contenedores
     EOF
