@@ -49,14 +49,14 @@ jobs:
 
     - name: Set up Database and Run Migrations
       env:
-        DATABASE_URL: postgres://postgres:postgrespassword@localhost:5432/webEmpresa_test
+        DATABASE_URL: postgres://postgres:postgrespassword@localhost:5432/webempresa
       run: |
         python manage.py migrate
       working-directory: ./webempresa  # Cambia este directorio si es necesario
 
     - name: Run Tests
       env:
-        DATABASE_URL: postgres://postgres:postgrespassword@localhost:5432/webEmpresa_test
+        DATABASE_URL: postgres://postgres:postgrespassword@localhost:5432/webempresa
       run: |
         python manage.py test
       working-directory: ./webempresa  # Cambia este directorio si es necesario
