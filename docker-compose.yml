@@ -5,12 +5,8 @@ services:
     build:
       context: .
     command: gunicorn webempresa.wsgi:application --bind 0.0.0.0:8000
-    volumes:
-      - /home/ubuntu/web-empresa-django-2:/app  # Usa solo este volumen
     ports:
       - "8000:8000"
-    depends_on:
-      - db
     networks:
       - my_network
 
@@ -31,8 +27,6 @@ services:
       - "80:80"
     volumes:
       - ./nginx:/etc/nginx/conf.d
-      - static_volume:/app/static
-      - media_volume:/app/media
     depends_on:
       - web
     networks:
@@ -40,8 +34,6 @@ services:
 
 volumes:
   postgres_data:
-  static_volume:
-  media_volume:
 
 networks:
   my_network:
