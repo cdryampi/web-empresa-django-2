@@ -5,7 +5,6 @@ FROM python:3.9-slim
 RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     zlib1g-dev \
-    zlib-dev \
     libpng-dev \
     libfreetype6-dev \
     liblcms2-dev \
