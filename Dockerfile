@@ -25,7 +25,9 @@ COPY . .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-WORKDIR /app/webempresa
+# Listar los archivos del directorio actual para verificar dónde está manage.py
+RUN ls -l /app
+
 # Recoger archivos estáticos
 RUN python manage.py collectstatic --noinput
 
