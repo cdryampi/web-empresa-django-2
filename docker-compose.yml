@@ -5,8 +5,12 @@ services:
     build:
       context: .
     command: gunicorn webempresa.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
     ports:
       - "8000:8000"
+    depends_on:
+      - db
     networks:
       - my_network
 
@@ -27,6 +31,8 @@ services:
       - "80:80"
     volumes:
       - ./nginx:/etc/nginx/conf.d
+      - ./static:/app/static  # Añadir ruta para los archivos estáticos
+      - ./media:/app/media    # Añadir ruta para los archivos de media
     depends_on:
       - web
     networks:
