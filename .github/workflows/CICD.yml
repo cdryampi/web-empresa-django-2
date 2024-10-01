@@ -1,4 +1,4 @@
-name: Django CI
+name: Django CI/CD
 
 on:
   push:
@@ -62,10 +62,35 @@ jobs:
       - name: Run Django tests
         env:
           DJANGO_SETTINGS_MODULE: webempresa.settings
-          POSTGRES_DB: webEmpresa
+          POSTGRES_DB: webempresa
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: thos
         run: |
           python manage.py migrate
           python manage.py test
         working-directory: ./webempresa
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test  # Asegura que el job de test pase antes de hacer el deploy
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} << 'EOF'
+            cd /home/ubuntu/web-empresa-django-2/webempresa
+            git pull origin main
+            source /home/ubuntu/venv/bin/activate
+            pip install -r requirements.txt
+            python manage.py migrate
+            python manage.py collectstatic --noinput
+            sudo systemctl restart gunicorn
+          EOF
