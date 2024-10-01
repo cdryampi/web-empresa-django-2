@@ -2,3 +2,4 @@ Django==2.0.2
 psycopg2-binary
 django-ckeditor
 Pillow
+gunicorn==20.1.0
