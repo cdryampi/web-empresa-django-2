@@ -15,12 +15,6 @@ RUN apt-get update && apt-get install -y \
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
-# Establecer el directorio de trabajo
-WORKDIR /app
-
-# Copiar todos los archivos del proyecto al contenedor
-COPY . .
-
 # Instalar dependencias
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
