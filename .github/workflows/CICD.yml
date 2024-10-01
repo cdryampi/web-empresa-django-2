@@ -81,18 +81,18 @@ jobs:
       - name: Install SSH key
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
 
       - name: Prepare permissions before pull
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.AWS_EC2_HOST }} << 'EOF'
             sudo chown -R ubuntu:www-data /home/ubuntu/web-empresa-django-2/webempresa/media/
             sudo chmod -R 775 /home/ubuntu/web-empresa-django-2/webempresa/media/
           EOF
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.AWS_EC2_HOST }} << 'EOF'
             cd /home/ubuntu/web-empresa-django-2
             git pull origin master
             source /home/ubuntu/venv/bin/activate
@@ -103,7 +103,7 @@ jobs:
 
       - name: Restore permissions after pull and restart Gunicorn
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.AWS_EC2_HOST }} << 'EOF'
             sudo chown -R www-data:www-data /home/ubuntu/web-empresa-django-2/webempresa/media/
             sudo chmod -R 775 /home/ubuntu/web-empresa-django-2/webempresa/media/
             sudo systemctl restart gunicorn
