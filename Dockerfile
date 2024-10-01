@@ -29,7 +29,7 @@ RUN pip install -r requirements.txt
 RUN ls -l /app
 
 # Recoger archivos estáticos
-RUN python manage.py collectstatic --noinput
+#RUN python manage.py collectstatic --noinput
 
 # Exponer el puerto que usa Gunicorn
 EXPOSE 8000
