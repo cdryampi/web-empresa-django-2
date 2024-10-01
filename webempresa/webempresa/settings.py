@@ -25,7 +25,7 @@ SECRET_KEY = '6t7a_wq%d9ry=nu5%1@)%8+2)ss6=626vi*zk-!nsz7pq!2=_g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'webempresa.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'webEmpresa',
+        'NAME': 'webempresa',
         'USER': 'postgres',
         'PASSWORD': 'thos',
         'HOST': '127.0.0.1',
@@ -134,7 +134,7 @@ STATIC_URL = '/static/'
 # Media Config
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Ckeditor
 
