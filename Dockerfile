@@ -18,16 +18,12 @@ RUN chmod +x /wait-for-it.sh
 # Establecer el directorio de trabajo
 WORKDIR /app
 
-# Copiar los archivos de requerimientos e instalarlos
-COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-
-# Copiar el resto de la aplicación
+# Copiar todos los archivos del proyecto al contenedor
 COPY . .
 
-# Cambiar al directorio donde está manage.py
-WORKDIR /app
+# Instalar dependencias
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
 # Recoger archivos estáticos
 RUN python manage.py collectstatic --noinput
