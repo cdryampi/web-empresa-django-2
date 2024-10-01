@@ -83,14 +83,28 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
 
+      - name: Prepare permissions before pull
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} << 'EOF'
+            sudo chown -R ubuntu:www-data /home/ubuntu/web-empresa-django-2/webempresa/media/
+            sudo chmod -R 775 /home/ubuntu/web-empresa-django-2/webempresa/media/
+          EOF
+
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.AWS_EC2_HOST }} << 'EOF'
-            cd /home/ubuntu/web-empresa-django-2/webempresa
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} << 'EOF'
+            cd /home/ubuntu/web-empresa-django-2
             git pull origin master
             source /home/ubuntu/venv/bin/activate
             pip install -r requirements.txt
             python manage.py migrate
             python manage.py collectstatic --noinput
-            sudo systemctl restart gunicorn
           EOF
+
+      - name: Restore permissions after pull and restart Gunicorn
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} << 'EOF'
+            sudo chown -R www-data:www-data /home/ubuntu/web-empresa-django-2/webempresa/media/
+            sudo chmod -R 775 /home/ubuntu/web-empresa-django-2/webempresa/media/
+            sudo systemctl restart gunicorn
+            EOF
