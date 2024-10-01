@@ -26,6 +26,9 @@ RUN pip install -r requirements.txt
 # Copiar el resto de la aplicación
 COPY . .
 
+# Cambiar al directorio donde está manage.py
+WORKDIR /app
+
 # Recoger archivos estáticos
 RUN python manage.py collectstatic --noinput
 
